@@ -107,6 +107,8 @@ if (!class_exists("brandfolderWordpressPlugin")) {
 						<div class="submit">
 						<input type="submit" name="update_brandfolderWordpressPluginSettings" value="<?php _e('Update Settings', 'brandfolderWordpressPlugin') ?>" /></div>
 						</form>
+						<h3>Security Settings</h3>
+						<p>Restrict embedding to certain domains by clicking 'Embed' for your brand at <a href="https://brandfolder.com/brands" target="_blank">https://brandfolder.com/brands</a> and fill out the "Embed Restrictions" box.</p>
 						 </div>
 					<?php
 				}//End function printAdminPage()
