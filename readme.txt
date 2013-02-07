@@ -13,6 +13,13 @@ Our simple plugin creates a beautiful web view for brand consumers to access you
 
 This plugin uses brandfolder to make it as easy as possible to create a press kit.
 
+### Features of the brandfolder WordPress plugin
+
+* Edit your brandfolder directly from your WordPress admin panel
+* Designate links to your brandfolder with the class name 'brandfolder' and you'll quickly have the embed popup working
+* Embed your interactive brandfolder inside a Page or Post using the [brandfolder] shortcode (make sure you have added your unique brandfoler URL befor doing so)
+
+
 == Installation ==
 
 1. Unpack archive to this archive to the 'wp-content/plugins/' directory inside of WordPress

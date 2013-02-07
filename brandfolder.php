@@ -2,7 +2,7 @@
 /*
 Plugin Name: brandfolder
 Plugin URI: http://brandfolder.com
-Description: Adds the necessary javascript for you to link to your brandfolder as a popup on your own site.
+Description: Adds the ability for you to edit your brandfolder inside Wordpress as well as embed it as a popup or in a Page/Post.
 Version: 0.1
 Author: Brandfolder, Inc.
 Author URI: http://brandfolder.com
@@ -18,7 +18,7 @@ function brandfolder_shortcode()	{
 	}		
 
 	$brandfolder_url = $brandfolderAdminOptions["brandfolder_url"];
-	$output = '<iframe src="http://brandfolder/'.$brandfolder_url.'/embed" style="width: 100%; height: 80%; min-height: 600px;"></iframe>';
+	$output = '<iframe src="https://brandfolder.com/'.$brandfolder_url.'/embed" style="width: 100%; height: 100%; min-height: 600px;border:0px;" frameborder="0"></iframe>';
 	
 	return $output;
 
@@ -101,9 +101,9 @@ if (!class_exists("brandfolderWordpressPlugin")) {
 											} ?>
 						<div class=wrap>
 						<form method="post" action="<?php echo $_SERVER["REQUEST_URI"]; ?>">
-						<h2>brandfolder Setup</h2>
-						<h3>brandfolder url <span style="font-size:70%;">(get yours <a href="http://brandfolder.com/brands/" target="_blank">here</a>)</span></h3>
-						http://brandfolder.com/<input type="text" name="brandfolder_url" size="20" value="<?php _e(apply_filters('format_to_edit',$devOptions['brandfolder_url']), 'brandfolderWordpressPlugin') ?>">
+						<h2>brandfolder setup</h2>
+						<h3>brandfolder url <span style="font-size:70%;">(get yours <a href="https://brandfolder.com/brands/" target="_blank">here</a>)</span></h3>
+						https://brandfolder.com/<input type="text" name="brandfolder_url" size="20" value="<?php _e(apply_filters('format_to_edit',$devOptions['brandfolder_url']), 'brandfolderWordpressPlugin') ?>">
 						<div class="submit">
 						<input type="submit" name="update_brandfolderWordpressPluginSettings" value="<?php _e('Update Settings', 'brandfolderWordpressPlugin') ?>" /></div>
 						</form>
@@ -116,12 +116,12 @@ if (!class_exists("brandfolderWordpressPlugin")) {
 			    if (!current_user_can('manage_options'))  {
 			        wp_die( __('You do not have sufficient permissions to access this page.') );
 			    }
-			  	echo '<iframe src="https://brandfolder.com" style="width: 100%; height: 80%; min-height: 600px;"></iframe>';
+			  	echo '<iframe src="https://brandfolder.com" style="width: 98%; height: 90%; min-height: 600px;margin-top:10px;"></iframe>';
 			}
 
 		function ConfigureMenu() {
 			add_menu_page("brandfolder", "brandfolder", 6, basename(__FILE__), array(&$dl_pluginSeries,'Main'));
-			add_submenu_page( "brandfolder-menu", "Setup", "Setup", 6, basename(__FILE__),  array(&$dl_pluginSeries,'printAdminPage') );
+			add_submenu_page( "brandfolder-menu", "plugin setup", "plugin setup", 6, basename(__FILE__),  array(&$dl_pluginSeries,'printAdminPage') );
 		}			
 
 		function add_settings_link($links, $file) {
@@ -129,7 +129,7 @@ if (!class_exists("brandfolderWordpressPlugin")) {
 		if (!$this_plugin) $this_plugin = plugin_basename(__FILE__);
 		 
 		if ($file == $this_plugin){
-			$settings_link = '<a href="admin.php?page=brandfolder-sub-menu">'.__("Setup", "brandfolder-wordpress-plugin").'</a>';
+			$settings_link = '<a href="admin.php?page=brandfolder-sub-menu">'.__("setup", "brandfolder-wordpress-plugin").'</a>';
 			 array_unshift($links, $settings_link);
 		}
 			return $links;
@@ -152,11 +152,7 @@ if (!function_exists("brandfolderWordpressPlugin_ap")) {
 		}
 
 		add_menu_page("brandfolder", "brandfolder", 6, "brandfolder-menu", array(&$dl_pluginSeries,'Main'), plugin_dir_url(__FILE__)."favicon.png");
-		add_submenu_page( "brandfolder-menu", "Setup", "Setup", 6, "brandfolder-sub-menu",  array(&$dl_pluginSeries,'printAdminPage') );
-
-		if (function_exists('add_options_page')) {
-			add_options_page('brandfolder Setup', 'brandfolder Setup', 9, basename(__FILE__), array(&$dl_pluginSeries, 'printAdminPage'));
-		}		
+		add_submenu_page( "brandfolder-menu", "plugin setup", "plugin setup", 6, "brandfolder-sub-menu",  array(&$dl_pluginSeries,'printAdminPage') );
 
 	}	
 }
