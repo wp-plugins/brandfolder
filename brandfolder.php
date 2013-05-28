@@ -3,11 +3,96 @@
 Plugin Name: brandfolder
 Plugin URI: http://brandfolder.com
 Description: Adds the ability for you to edit your brandfolder inside Wordpress as well as embed it as a popup or in a Page/Post.
-Version: 0.1
+Version: 0.2
 Author: Brandfolder, Inc.
 Author URI: http://brandfolder.com
 License: GPLv2
 */
+
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//
+// START THE BF FOR BRAND CONSUMERS
+//
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
+//Assign a name to your tab
+function bf_media_menu($tabs) {
+	$tabs['bf']='Brandfolder';
+	return $tabs;
+}
+
+//Adds your scripts to your plugin
+function bf_scripts() {	
+	//Adds css
+	wp_deregister_style( 'brandfolder-style', plugins_url('upload-media.css', __FILE__) );
+  wp_register_style( 'brandfolder-style', plugins_url('upload-media.css', __FILE__) );
+  wp_enqueue_style( 'brandfolder-style' );	
+
+	//Adds JQuery 
+	wp_deregister_script('jquery');
+	wp_register_script( 'jquery', '//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js');
+	wp_enqueue_script( 'jquery' );
+
+	//Adds the custom brandfolder script
+	wp_deregister_script( 'upload-media-script' );
+	wp_register_script( 'upload-media-script', plugins_url( 'upload-media.js' , __FILE__ ));
+	wp_enqueue_script( 'upload-media-script' );
+
+}
+
+//This is our form for the plugin
+function bf_upload_form () {
+	//echos the tabs at the top of the media window
+	media_upload_header();
+
+	//Adds your javascript
+	bf_scripts();
+	?>
+
+		<div id="s-bfTopBar">
+			<div class="s-left-links">
+				<a href="http://brandfolder.com" target="bfIframe">Home</a>
+			</div>
+			<div class="s-input-form">
+				<input type='text' id='js-bfLogoName' placeholder="Right click on an image's download link, choose 'Copy Link Address' and paste it here" />
+				<input id='js-bfInsertShortCode' type='button' class='button' value='Insert Image'>
+			</div> 	
+		</div>
+		<div id="s-bfMainContent">
+
+<?php
+	$devOptions = get_option("brandfolderWordpressPluginAdminOptions");
+		if (!empty($devOptions)) {
+			foreach ($devOptions as $key => $option)
+				$brandfolderAdminOptions[$key] = $option;
+		}
+		$brandfolder_url = $brandfolderAdminOptions["brandfolder_url"];
+		$output = '<iframe id="bfIframe" name="bfIframe" src="https://brandfolder.com/'.$brandfolder_url.'/embed" style="background-color:white;background-image:url(\'https://d2cw52ytgc6llc.cloudfront.net/loading_embed.gif\');background-repeat:no-repeat;background-attachment:fixed;background-position:center;width: 99%; height:85%; margin-top:60px; min-height: 600px;border:0px;border:2px solid #CCC;margin:0 auto;" frameborder="0"></iframe>';	
+
+		echo $output;
+		echo "</div>";
+ }
+
+//Returns the iframe that your plugin will be returned in
+function bf_menu_handle() {
+	return wp_iframe('bf_upload_form');
+}
+
+//Needed script to make sure wordpresses media upload scripts are inplace
+wp_enqueue_script('media-upload');
+
+//Adds your tab to the media upload button
+add_filter('media_upload_tabs', 'bf_media_menu');
+
+//Adds your menu handle to when the media upload action occurs
+add_action('media_upload_bf', 'bf_menu_handle');
+
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//
+// START THE BF FOR BRAND OWNERS
+//
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 function brandfolder_shortcode()	{
 
@@ -18,8 +103,28 @@ function brandfolder_shortcode()	{
 	}		
 
 	$brandfolder_url = $brandfolderAdminOptions["brandfolder_url"];
-	$output = '<iframe src="https://brandfolder.com/'.$brandfolder_url.'/embed" style="width: 100%; height: 100%; min-height: 600px;border:0px;" frameborder="0"></iframe>';
-	
+	$output = '<iframe src="https://brandfolder.com/'.$brandfolder_url.'/embed" style="width: 100%; height: 100%; min-height: 600px;border:0px;border:2px solid #CCC;" frameborder="0"></iframe>';
+
+	/*
+		if( !class_exists( 'WP_Http' ) ) include_once( ABSPATH . WPINC. '/class-http.php' );
+
+		$request = new WP_Http;
+		$result = $request->request( htmlspecialchars_decode("https://brandfolder.com/".$brandfolder_url."/embed") );
+
+		if (isset($result->errors)) {
+			// display error message of some sort
+			$output = "Error occured!";
+			$output .= "<!-- brandfolder 1.0 URL: ".htmlspecialchars_decode("https://brandfolder.com/".$brandfolder_url."/embed")." DEBUG: ".$result->errors." -->";
+		} else {
+
+			$output = $result['body'];
+			$output = str_replace("span11 offset1","",$output);
+			$output = str_replace("span10 offset2","",$output);
+			$output = str_replace("container","",$output);
+			$output .= "<!-- brandfolder 1.0 URL: ".htmlspecialchars_decode("https://brandfolder.com/".$brandfolder_url."/embed")." -->";
+
+		}
+	*/
 	return $output;
 
  
