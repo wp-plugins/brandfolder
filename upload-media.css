@@ -1,0 +1,29 @@
+#s-bfTopBar {
+  position:fixed !important;
+  top:0px !important;
+  left:0px !important;
+  width:100% !important;
+  background-color: white !important;
+  border-bottom: 2px solid #CCC !important;
+}
+#s-bfMainContent {
+  padding-top:70px !important;
+  text-align:center !important;
+}
+.s-left-links {
+  margin:26px 40px !important;
+  float:left !important;
+  font-size:1.2em !important;
+}
+.s-input-form {
+	margin:20px auto;
+  min-width:650px;
+  float:left !important;
+}
+.s-input-form input {
+	height:30px !important;
+	font-size:1.1em !important;
+}
+.s-input-form input[type="text"] {
+	  width:80%;
+	}
