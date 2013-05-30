@@ -3,7 +3,7 @@ Contributors: parterburn
 Tags: brand asset management, brand management, share your brand, logo upload, logo management, build your brand
 Requires at least: 3.0
 Tested up to: 3.5.1
-Stable tag: 0.3
+Stable tag: 0.3.1
 
 Our simple plugin creates a beautiful web view for brand consumers to access your logos, product images, brand information, and plenty more.
 
@@ -17,7 +17,8 @@ This plugin uses brandfolder to make it as easy as possible to create a press ki
 
 * Edit your brandfolder directly from your WordPress admin panel
 * Designate links to your brandfolder with the class name 'brandfolder' and you'll quickly have the embed popup working
-* Embed your interactive brandfolder inside a Page or Post using the [brandfolder] shortcode (make sure you have added your unique brandfoler URL befor doing so)
+* Embed your interactive brandfolder inside a Page or Post using the [brandfolder] shortcode (make sure you have added your unique brandfoler URL before doing so)
+* Media Library integration: search public brandfolders & find logos or images to use in your Pages or Posts.
 
 
 == Installation ==
