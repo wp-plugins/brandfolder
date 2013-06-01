@@ -3,7 +3,7 @@
 Plugin Name: brandfolder
 Plugin URI: http://brandfolder.com
 Description: Adds the ability for you to edit your brandfolder inside Wordpress as well as embed it as a popup or in a Page/Post.
-Version: 0.3
+Version: 0.4
 Author: Brandfolder, Inc.
 Author URI: http://brandfolder.com
 License: GPLv2
@@ -317,9 +317,7 @@ function my_refresh_mce($ver) {
 }
 
 
-//add_filter( 'tiny_mce_version', 'my_refresh_mce');
-add_action('init', 'add_brandfolder_button');
-
+//add_action('init', 'add_brandfolder_button');
 
 if (!class_exists("brandfolderWordpressPlugin")) {
 	class brandfolderWordpressPlugin {
@@ -337,7 +335,7 @@ if (!class_exists("brandfolderWordpressPlugin")) {
 			if (!empty($devOptions)) {
 				foreach ($devOptions as $key => $option)
 					$devloungeAdminOptions[$key] = $option;
-			}				
+			}
 			update_option($this->adminOptionsName, $devloungeAdminOptions);
 			return $devloungeAdminOptions;
 		}
@@ -389,7 +387,7 @@ if (!class_exists("brandfolderWordpressPlugin")) {
 		if (!$this_plugin) $this_plugin = plugin_basename(__FILE__);
 		 
 		if ($file == $this_plugin){
-			$settings_link = '<a href="admin.php?page=brandfolder-sub-menu">'.__("setup", "brandfolder-wordpress-plugin").'</a>';
+			$settings_link = '<a href="admin.php?page=brandfolder-sub-menu">'.__("setup", "brandfolder").'</a>';
 			 array_unshift($links, $settings_link);
 		}
 			return $links;
@@ -417,16 +415,35 @@ if (!function_exists("brandfolderWordpressPlugin_ap")) {
 	}	
 }
 
+function load_into_head() { 
+	$devOptions = get_option("brandfolderWordpressPluginAdminOptions");
+	if (!empty($devOptions)) {
+		foreach ($devOptions as $key => $option)
+			$brandfolderAdminOptions[$key] = $option;
+	}		
+
+	$brandfolder_url = $brandfolderAdminOptions["brandfolder_url"];
+
+	?> 
+
+	<script type="text/javascript">
+	  var brandfolderLoadUrl = '<?php echo $brandfolder_url ?>';
+	  var brandfoldeOnLoad=function(){if("#brand"==window.location.hash)return Brandfolder.showEmbed({brandfolder_id:brandfolderLoadUrl})};
+	</script> 
+
+<?php 
+} 
+
 //Actions and Filters	
 if (isset($dl_pluginSeries)) {
 	//Actions
 	add_action('admin_menu', 'brandfolderWordpressPlugin_ap');
-	add_action('brandfolder-wordpress-plugin/brandfolder.php',  array(&$dl_pluginSeries, 'init'));
-	
-//	add_filter('plugin_action_links', array(&$dl_pluginSeries, 'add_settings_link'), 10, 2 );
+	add_action('brandfolder/brandfolder.php',  array(&$dl_pluginSeries, 'init'));
 
-    wp_register_script( 'brandfolder', 'https://brandfolder.com/js');
-    wp_enqueue_script( 'brandfolder'); 
+  wp_register_script( 'brandfolder', 'https://brandfolder.com/js');
+  wp_enqueue_script( 'brandfolder'); 
+	
+	add_action( 'wp_head', 'load_into_head' );
 
 }
 

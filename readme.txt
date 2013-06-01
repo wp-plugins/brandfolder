@@ -37,6 +37,9 @@ This plugin is released under a GPL license.
 
 == Changelog ==
 
+= 0.4 =
+* Automatically makes it so yourdomain.com/#brand will popup your brandfolder
+
 = 0.3 =
 * The plugin now saves the files from the Brandfolder SERVE API locally so there's no worry about broken links throughout your Wordpress site!
 
