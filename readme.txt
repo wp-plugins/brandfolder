@@ -37,6 +37,9 @@ This plugin is released under a GPL license.
 
 == Changelog ==
 
+= 0.5 =
+* Now faster! Javascript is pulling from our CDN.
+
 = 0.4 =
 * Automatically makes it so yourdomain.com/#brand will popup your brandfolder
 
