@@ -3,7 +3,7 @@
 Plugin Name: brandfolder
 Plugin URI: http://brandfolder.com
 Description: Adds the ability for you to edit your brandfolder inside Wordpress as well as embed it as a popup or in a Page/Post.
-Version: 0.5
+Version: 1.0
 Author: Brandfolder, Inc.
 Author URI: http://brandfolder.com
 License: GPLv2
@@ -197,7 +197,7 @@ class BrandfolderServe {
 
 	  <?php
 
-	      $output = '<iframe id="bfIframe" name="bfIframe" src="https://brandfolder.com/search" style="background-color:white;background-image:url(\'https://d2cw52ytgc6llc.cloudfront.net/loading_embed.gif\');background-repeat:no-repeat;background-attachment:fixed;background-position:center;width: 99%; height:85%; min-height: 600px;border:0px;border:2px solid #CCC;margin:0 auto;" frameborder="0"></iframe>';  
+	      $output = '<iframe id="bfIframe" name="bfIframe" src="https://brandfolder.com/search" style="background-color:white;background-image:url(\'https://d2sdf28wg0skh3.cloudfront.net/loading_embed.gif\');background-repeat:no-repeat;background-attachment:fixed;background-position:center;width: 99%; height:85%; min-height: 600px;border:0px;border:2px solid #CCC;margin:0 auto;" frameborder="0"></iframe>';  
 
 	      echo $output;
 	      echo "</div>";
@@ -440,7 +440,7 @@ if (isset($dl_pluginSeries)) {
 	add_action('admin_menu', 'brandfolderWordpressPlugin_ap');
 	add_action('brandfolder/brandfolder.php',  array(&$dl_pluginSeries, 'init'));
 
-  wp_register_script( 'brandfolder', '//d2cw52ytgc6llc.cloudfront.net/bf.min.js');
+  wp_register_script( 'brandfolder', '//d2sdf28wg0skh3.cloudfront.net/bf.min.js');
   wp_enqueue_script( 'brandfolder'); 
 	
 	add_action( 'wp_head', 'load_into_head' );
