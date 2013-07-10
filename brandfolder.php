@@ -1,9 +1,9 @@
 <?php
 /*
-Plugin Name: brandfolder
+Plugin Name: Brandfolder
 Plugin URI: http://brandfolder.com
 Description: Adds the ability for you to edit your brandfolder inside Wordpress as well as embed it as a popup or in a Page/Post.
-Version: 1.0
+Version: 1.0.1
 Author: Brandfolder, Inc.
 Author URI: http://brandfolder.com
 License: GPLv2
@@ -116,7 +116,12 @@ class BrandfolderServe {
 			}
 
 			$filename = wp_unique_filename( $uploads['path'], $newfilename, $unique_filename_callback = null );
-			$wp_filetype = wp_check_filetype($filename, null );
+			//$wp_filetype = wp_check_filetype($filename, null );
+
+			$response = wp_remote_get($imageurl);
+			$wp_filetype_h = wp_remote_retrieve_headers($response);
+			$wp_filetype = $wp_filetype_h['content-type'];			
+
 			$fullpathfilename = $uploads['path'] . "/" . $filename;
 			
 			try {
@@ -133,7 +138,7 @@ class BrandfolderServe {
 				}
 				
 				$attachment = array(
-					 'post_mime_type' => $wp_filetype['type'],
+					 'post_mime_type' => $wp_filetype,
 					 'post_title' => preg_replace('/\.[^.]+$/', '', $filename),
 					 'post_content' => '',
 					 'post_status' => 'inherit',
@@ -170,7 +175,20 @@ class BrandfolderServe {
         <input id='js-bfInsertShortCode' type='button' class='button' value='Insert Image'>-->
 		    <div class="s-left-links">
 		    	<div style="float:left;">
-			      <a href="http://brandfolder.com" target="bfIframe">Home</a>
+		    	<?
+			    	$devOptions = get_option("brandfolderWordpressPluginAdminOptions");
+						if (!empty($devOptions)) {
+							foreach ($devOptions as $key => $option)
+								$brandfolderAdminOptions[$key] = $option;
+						}		
+
+						$brandfolder_url = $brandfolderAdminOptions["brandfolder_url"];
+						if ($brandfolder_url == "") {
+							echo "<a href=\"https://brandfolder.com\" target=\"bfIframe\">Home</a>";
+						} else {
+							echo "<a href=\"https://brandfolder.com/".$brandfolder_url."\" target=\"bfIframe\">".$brandfolder_url."</a>";
+						}
+		    	?>
 			      &nbsp;&nbsp;
 			      <a href="http://brandfolder.com/search" target="bfIframe">Search</a>
 		    	</div>
@@ -283,7 +301,7 @@ function brandfolder_shortcode()	{
 
 }
 
-add_shortcode('brandfolder', 'brandfolder_shortcode');
+add_shortcode('Brandfolder', 'brandfolder_shortcode');
 
 function add_brandfolder_button() {
    // Don't bother doing this stuff if the current user lacks permissions
@@ -357,14 +375,12 @@ if (!class_exists("brandfolderWordpressPlugin")) {
 											} ?>
 						<div class=wrap>
 						<form method="post" action="<?php echo $_SERVER["REQUEST_URI"]; ?>">
-						<h2>brandfolder setup</h2>
-						<h3>brandfolder url <span style="font-size:70%;">(get yours <a href="https://brandfolder.com/brands/" target="_blank">here</a>)</span></h3>
+						<h2>Brandfolder setup</h2>
+						<h3>Brandfolder url <span style="font-size:70%;">(get yours <a href="https://brandfolder.com/brands/" target="_blank">here</a>)</span></h3>
 						https://brandfolder.com/<input type="text" name="brandfolder_url" size="20" value="<?php _e(apply_filters('format_to_edit',$devOptions['brandfolder_url']), 'brandfolderWordpressPlugin') ?>">
 						<div class="submit">
 						<input type="submit" name="update_brandfolderWordpressPluginSettings" value="<?php _e('Update Settings', 'brandfolderWordpressPlugin') ?>" /></div>
 						</form>
-						<h3>Security Settings</h3>
-						<p>Restrict embedding to certain domains by clicking 'Embed' for your brand at <a href="https://brandfolder.com/brands" target="_blank">https://brandfolder.com/brands</a> and fill out the "Embed Restrictions" box.</p>
 						 </div>
 					<?php
 				}//End function printAdminPage()
@@ -374,12 +390,25 @@ if (!class_exists("brandfolderWordpressPlugin")) {
 			    if (!current_user_can('manage_options'))  {
 			        wp_die( __('You do not have sufficient permissions to access this page.') );
 			    }
-			  	echo '<iframe src="https://brandfolder.com" style="width: 98%; height: 90%; min-height: 600px;margin-top:10px;"></iframe>';
+					
+					$devOptions = get_option("brandfolderWordpressPluginAdminOptions");
+					if (!empty($devOptions)) {
+						foreach ($devOptions as $key => $option)
+							$brandfolderAdminOptions[$key] = $option;
+					}		
+
+					$brandfolder_url = $brandfolderAdminOptions["brandfolder_url"];
+
+			    if ($brandfolder_url == "") {
+						echo '<iframe src="https://brandfolder.com" style="width: 98%; height: 95%; min-height: 600px;margin-top:10px;"></iframe>';
+			    } else {
+			    	echo '<iframe src="https://brandfolder.com/'.$brandfolder_url.'/edit" style="width: 98%; height: 95%; min-height: 600px;margin-top:10px;"></iframe>';	
+			    } 	
 			}
 
 		function ConfigureMenu() {
-			add_menu_page("brandfolder", "brandfolder", 6, basename(__FILE__), array(&$dl_pluginSeries,'Main'));
-			add_submenu_page( "brandfolder-menu", "plugin setup", "plugin setup", 6, basename(__FILE__),  array(&$dl_pluginSeries,'printAdminPage') );
+			add_menu_page("Edit Brandfolder", "Edit Brandfolder", 6, basename(__FILE__), array(&$dl_pluginSeries,'Main'));
+			add_submenu_page( "brandfolder-menu", "Plugin setup", "Plugin setup", 6, basename(__FILE__),  array(&$dl_pluginSeries,'printAdminPage') );
 		}			
 
 		function add_settings_link($links, $file) {
@@ -409,8 +438,8 @@ if (!function_exists("brandfolderWordpressPlugin_ap")) {
 			return;
 		}
 
-		add_menu_page("brandfolder", "brandfolder", 6, "brandfolder-menu", array(&$dl_pluginSeries,'Main'), plugin_dir_url(__FILE__)."favicon.png");
-		add_submenu_page( "brandfolder-menu", "plugin setup", "plugin setup", 6, "brandfolder-sub-menu",  array(&$dl_pluginSeries,'printAdminPage') );
+		add_menu_page("Brandfolder", "Brandfolder", 6, "brandfolder-menu", array(&$dl_pluginSeries,'Main'), plugin_dir_url(__FILE__)."favicon.png");
+		add_submenu_page( "brandfolder-menu", "Plugin setup", "Plugin setup", 6, "brandfolder-sub-menu",  array(&$dl_pluginSeries,'printAdminPage') );
 
 	}	
 }

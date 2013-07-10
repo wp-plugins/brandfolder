@@ -1,9 +1,9 @@
-=== Brandfolder - Own Your Brand ===
+=== Brandfolder - Simple, visual brand asset sharing. ===
 Contributors: parterburn
 Tags: brand asset management, brand management, share your brand, logo upload, logo management, build your brand
 Requires at least: 3.0
 Tested up to: 3.5.2
-Stable tag: 1.0
+Stable tag: 1.0.1
 
 Our simple plugin creates a beautiful web view for anybody to access your logos, product images, brand information, and plenty more.
 
