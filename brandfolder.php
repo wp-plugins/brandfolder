@@ -3,7 +3,7 @@
 Plugin Name: Brandfolder
 Plugin URI: http://brandfolder.com
 Description: Adds the ability for you to edit your brandfolder inside Wordpress as well as embed it as a popup or in a Page/Post.
-Version: 1.0.1
+Version: 1.0.2
 Author: Brandfolder, Inc.
 Author URI: http://brandfolder.com
 License: GPLv2
@@ -292,16 +292,19 @@ function brandfolder_shortcode()	{
 	if (!empty($devOptions)) {
 		foreach ($devOptions as $key => $option)
 			$brandfolderAdminOptions[$key] = $option;
-	}		
+	}
 
 	$brandfolder_url = $brandfolderAdminOptions["brandfolder_url"];
+	$powered_by = $brandfolderAdminOptions["powered_by"];
 	$output = '<iframe src="https://brandfolder.com/'.$brandfolder_url.'/embed" style="width: 100%; height: 100%; min-height: 600px;border:0px;border:2px solid #CCC;" frameborder="0"></iframe>';
+	$output .= '<a href="http://brandfolder.com" title="Brand assets by Brandfolder" style="float:right;"><img src="//d2sdf28wg0skh3.cloudfront.net/powered_by.png" style="height:30px;border:0px;"></a>';
+	$output .= '<div style="clear:both;"></div>';	
 
 	return $output;
 
 }
 
-add_shortcode('Brandfolder', 'brandfolder_shortcode');
+add_shortcode('brandfolder', 'brandfolder_shortcode');
 
 function add_brandfolder_button() {
    // Don't bother doing this stuff if the current user lacks permissions
@@ -312,7 +315,7 @@ function add_brandfolder_button() {
    
    if ( get_user_option('rich_editing') == 'true') {
      add_filter("mce_external_plugins", "add_brandfolder_tinymce_plugin");
-     add_filter('mce_buttons', 'register_brandfolder_button');
+     add_filter('mce_buttons_2', 'register_brandfolder_button');
    }
    
 }
@@ -335,7 +338,7 @@ function my_refresh_mce($ver) {
 }
 
 
-//add_action('init', 'add_brandfolder_button');
+add_action('init', 'add_brandfolder_button');
 
 if (!class_exists("brandfolderWordpressPlugin")) {
 	class brandfolderWordpressPlugin {
@@ -366,6 +369,7 @@ if (!class_exists("brandfolderWordpressPlugin")) {
 					if (isset($_POST['update_brandfolderWordpressPluginSettings'])) { 
 						if (isset($_POST['brandfolder_url'])) {
 							$devOptions['brandfolder_url'] = apply_filters('brandfolder_url', $_POST['brandfolder_url']);
+							$devOptions['powered_by'] = apply_filters('powered_by', $_POST['powered_by']);
 						}
 						update_option($this->adminOptionsName, $devOptions);
 						

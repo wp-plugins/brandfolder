@@ -2,14 +2,14 @@
 	tinymce.create('tinymce.plugins.Yourbrandfolder', {
 		init : function(ed, url) {
 			ed.addButton('yourbrandfolder', {
-				title : 'yourbrandfolder.brandfolder',
+				title : 'Embed brandfolder',
 				image : url+'/favicon.png',
 				onclick : function() {
 					//idPattern = /(^[A-Za-z0-9]*[A-Za-z0-9][A-Za-z0-9]*$)/;
 					//var brandfolderId = prompt("Enter your brandfolder username (also make sure your API is in the settings)", "brandfolder username");
 					//var m = idPattern.exec(brandfolderId);
 					//if (m != null && m != 'undefined')
-						ed.execCommand('mceInsertContent', false, '[brandfolder]');
+					ed.execCommand('mceInsertContent', false, '[brandfolder]');
 				}
 			});
 		},
