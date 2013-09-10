@@ -6,10 +6,8 @@
 				image : url+'/favicon.png',
 				onclick : function() {
 					//idPattern = /(^[A-Za-z0-9]*[A-Za-z0-9][A-Za-z0-9]*$)/;
-					//var brandfolderId = prompt("Enter your brandfolder username (also make sure your API is in the settings)", "brandfolder username");
-					//var m = idPattern.exec(brandfolderId);
-					//if (m != null && m != 'undefined')
-					ed.execCommand('mceInsertContent', false, '[brandfolder]');
+					var brandfolderId = alert("\n\nInsert [brandfolder] for inline embed\n\nInsert [brandfolder-logos] where logos could also be images, documents, people, or press to embed specific element groups.\n\nYou can option add id=\"mapmyfitness\" to either shortcode to specify the brandfolder.");
+					//ed.execCommand('mceInsertContent', false, '[brandfolder]');
 				}
 			});
 		},
