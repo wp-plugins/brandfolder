@@ -2,11 +2,11 @@
 	tinymce.create('tinymce.plugins.Yourbrandfolder', {
 		init : function(ed, url) {
 			ed.addButton('yourbrandfolder', {
-				title : 'Embed brandfolder',
+				title : 'Embed Brandfolder',
 				image : url+'/favicon.png',
 				onclick : function() {
 					//idPattern = /(^[A-Za-z0-9]*[A-Za-z0-9][A-Za-z0-9]*$)/;
-					var brandfolderId = alert("\n\nInsert [brandfolder] for inline embed\n\nInsert [brandfolder-logos] where logos could also be images, documents, people, or press to embed specific element groups.\n\nYou can option add id=\"mapmyfitness\" to either shortcode to specify the brandfolder.");
+					var brandfolderId = alert("\n\nInsert [Brandfolder] for inline embed\n\nInsert [Brandfolder-logos] where logos could also be images, documents, people, or press to embed specific element groups.\n\nYou can option add id=\"mapmyfitness\" to either shortcode to specify the Brandfolder.");
 					//ed.execCommand('mceInsertContent', false, '[brandfolder]');
 				}
 			});
@@ -16,7 +16,7 @@
 		},
 		getInfo : function() {
 			return {
-				longname : "brandfolder Shortcode",
+				longname : "Brandfolder Shortcode",
 				author : 'Paul Arterburn',
 				authorurl : 'http://brandfolder.com/',
 				infourl : 'http://brandfolder.com/',
