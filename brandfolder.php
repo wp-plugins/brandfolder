@@ -3,7 +3,7 @@
 Plugin Name: Brandfolder
 Plugin URI: http://wordpress.org/plugins/brandfolder/
 Description: Adds the ability for you to edit your Brandfolder inside Wordpress as well as easily embed it as a popup, or in a Page/Post with widgets or an iframe.
-Version: 2.0
+Version: 2.0.1
 Author: Brandfolder, Inc.
 Author URI: http://brandfolder.com
 License: GPLv2
@@ -36,7 +36,7 @@ function brandfolder_inline($atts)	{
 		$bf_inline_width = "100%;";
 	}
 
-  $output = '<iframe seamless="seamless" id="brandfolder-embed-iframe" src="http://localhost:3000/'.$id.'/embed" height="550" width="100%" scrolling="auto" frameborder="0" style="max-width: '.$bf_inline_width.' !important;width: '.$bf_inline_width.' !important;border:2px solid #CCC;display:block;background-image:url(\'//d2sdf28wg0skh3.cloudfront.net/loading_embed.gif\');background-repeat:no-repeat;background-position:center;"></iframe>';
+  $output = '<iframe seamless="seamless" id="brandfolder-embed-iframe" src="https://brandfolder.com/'.$id.'/embed" height="550" width="100%" scrolling="auto" frameborder="0" style="max-width: '.$bf_inline_width.' !important;width: '.$bf_inline_width.' !important;border:2px solid #CCC;display:block;background-image:url(\'//d2sdf28wg0skh3.cloudfront.net/loading_embed.gif\');background-repeat:no-repeat;background-position:center;"></iframe>';
 	$output .= '<a href="http://brandfolder.com" title="Organize and share your brand assets" style="float:right;margin-top:5px;border:0px;margin-right:10px;"><img src="//d2sdf28wg0skh3.cloudfront.net/powered_by_black.png" style="height:30px;border:0px;"></a>';
 	$output .= '<div style="clear:both;"></div>';	
   $output .= '<script type="text/javascript">jQuery(document).ready(function () { jQuery(\'#brandfolder-embed-iframe\').iframeHeight(); });</script>';
