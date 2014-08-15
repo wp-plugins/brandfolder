@@ -3,7 +3,7 @@
 Plugin Name: Brandfolder
 Plugin URI: http://wordpress.org/plugins/brandfolder/
 Description: Adds the ability for you to edit your Brandfolder inside Wordpress as well as easily embed it as a popup, or in a Page/Post with widgets or an iframe.
-Version: 2.0.2
+Version: 2.0.3
 Author: Brandfolder, Inc.
 Author URI: http://brandfolder.com
 License: GPLv2
@@ -234,6 +234,7 @@ if (!class_exists("brandfolderWordpressPlugin")) {
 						if (isset($_POST['brandfolder_url'])) {
 							$devOptions['brandfolder_url'] = apply_filters('brandfolder_url', $_POST['brandfolder_url']);
 							$devOptions['brandfolder_inline_width'] = apply_filters('brandfolder_inline_width', $_POST['brandfolder_inline_width']);
+              $devOptions['brandfolder_style'] = apply_filters('brandfolder_style', $_POST['brandfolder_style']);
 						}
 						update_option($this->adminOptionsName, $devOptions);
 						
@@ -248,8 +249,8 @@ if (!class_exists("brandfolderWordpressPlugin")) {
 						https://brandfolder.com/<input type="text" name="brandfolder_url" size="20" value="<?php _e(apply_filters('format_to_edit',$devOptions['brandfolder_url']), 'brandfolderWordpressPlugin') ?>">
 						<br>
 						<hr>
-						<h3>Settings for inline-embed option <span style="font-size:70%;">(<a href="http://help.brandfolder.com/knowledgebase/articles/237579" target="_blank">what's this?</a>)</span></h3>
-						<div class="">
+						<h3>Settings for inline-embed option <span style="font-size:70%;">(<a href="http://help.brandfolder.com/knowledgebase/topics/40112-sharing-embedding-a-brandfolder" target="_blank">what's this?</a>)</span></h3>
+						<div>
 							<?php
 								if(isset($devOptions['brandfolder_inline_width'])) {
 									$brandfolder_inline_width = $devOptions['brandfolder_inline_width'];
@@ -260,6 +261,20 @@ if (!class_exists("brandfolderWordpressPlugin")) {
 
               IFrame Width: <input type="text" name="brandfolder_inline_width" size="20" value="<?php echo $brandfolder_inline_width ?>"><span style="font-size:90%;margin-left:15px;">Ex) 750px or 100%</span>
 						</div>
+            
+            <hr>
+            
+            <h3>CSS for Widget API option <span style="font-size:70%;">(<a href="https://api.brandfolder.com" target="_blank">what's this?</a>)</span></h3>
+            <div>
+              <?php
+                if(isset($devOptions['brandfolder_style'])) {
+                  $brandfolder_style = $devOptions['brandfolder_style'];
+                } else {
+                  $brandfolder_style = ".bf-image-name { font-size: 20px; }";
+                }
+              ?>            
+              <span style="font-size:90%;margin-bottom:10px;">&lt;style&gt;</span><br><textarea name="brandfolder_style" rows="8" style="width:80%;"><?php echo $brandfolder_style; ?></textarea><br><span style="font-size:90%;">&lt;/style&gt;</span>
+            </div>
 						
 						<div class="submit">
 						<input type="submit" name="update_brandfolderWordpressPluginSettings" value="<?php _e('Update Settings', 'brandfolderWordpressPlugin') ?>" /></div>
@@ -341,7 +356,11 @@ function load_into_head() {
 	<script type="text/javascript">
 	  var bf_url = '<?php echo $brandfolder_url ?>';
 	  var brandfoldeOnLoad=function(){if("#brand"==window.location.hash)return Brandfolder.showEmbed({brandfolder_id:bf_url})};
-	</script> 
+	</script>
+
+  <style>
+    <?php echo $brandfolderAdminOptions["brandfolder_style"] ?>
+  </style>
 
 <?php 
 } 
