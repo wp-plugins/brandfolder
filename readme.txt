@@ -2,8 +2,8 @@
 Contributors: parterburn
 Tags: brand asset management, brand management, share your brand, logo upload, logo management, build your brand, marketing tool
 Requires at least: 3.0
-Tested up to: 3.9
-Stable tag: 2.0.3
+Tested up to: 4.0
+Stable tag: 2.1
 
 Our simple plugin creates a beautiful web view for anybody to access your logos, product images, brand information, and plenty more.
 
@@ -35,6 +35,9 @@ This plugin uses Brandfolder to make it as easy as possible to create a press ki
 This plugin is released under a GPL license.
 
 == Changelog ==
+
+= 2.1 =
+* Support for Wordpress 4.0
 
 = 2.0.3 =
 * Added style support for the Widget API
