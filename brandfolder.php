@@ -3,7 +3,7 @@
 Plugin Name: Brandfolder
 Plugin URI: http://wordpress.org/plugins/brandfolder/
 Description: Adds the ability for you to edit your Brandfolder inside Wordpress as well as easily embed it as a popup, or in a Page/Post with widgets or an iframe.
-Version: 2.1
+Version: 2.2
 Author: Brandfolder, Inc.
 Author URI: http://brandfolder.com
 License: GPLv2
