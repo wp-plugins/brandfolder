@@ -38,6 +38,9 @@ This plugin is released under a GPL license.
 
 == Changelog ==
 
+= 2.2.2 =
+* Fix issue with "Cannot redeclare my_refresh_mce()" incompatibility with other plugins
+
 = 2.2 =
 * Support for Wordpress 4.1
 * Better support for inline iframe option
