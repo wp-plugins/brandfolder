@@ -3,7 +3,7 @@ Contributors: parterburn
 Tags: brand asset management, brand management, digital asset management, DAM, logo upload, logo management, share your logo, marketing tool, brand building
 Requires at least: 3.0
 Tested up to: 4.1
-Stable tag: 2.2.1
+Stable tag: 2.2.2
 
 Our simple plugin creates a beautiful web view for anybody to access your logos, product images, brand information, and plenty more.
 
