@@ -3,11 +3,9 @@
 		init : function(ed, url) {
 			ed.addButton('yourbrandfolder', {
 				title : 'Embed Brandfolder',
-				image : url+'/favicon.png',
+				image : url+'/logo.png',
 				onclick : function() {
-					//idPattern = /(^[A-Za-z0-9]*[A-Za-z0-9][A-Za-z0-9]*$)/;
-					var brandfolderId = alert("\n\nInsert [Brandfolder] for inline embed\n\nInsert [Brandfolder-logos] where logos could also be images, documents, people, or press to embed specific element groups.\n\nYou can option add id=\"mapmyfitness\" to either shortcode to specify the Brandfolder.");
-					//ed.execCommand('mceInsertContent', false, '[brandfolder]');
+					var brandfolderId = alert("\Inline Embed:\n[Brandfolder id=\"mapmyfitness\"]\n\nWidget API:\n[Brandfolder-logos id=\"mapmyfitness\"]\nwhere logos could also be images, documents, people, or press to embed specific categories.\n");
 				}
 			});
 		},

@@ -3,7 +3,7 @@
 Plugin Name: Brandfolder
 Plugin URI: http://wordpress.org/plugins/brandfolder/
 Description: Adds the ability for you to edit your Brandfolder inside Wordpress as well as easily embed it as a popup, or in a Page/Post with widgets or an iframe.
-Version: 2.2.2
+Version: 2.3
 Author: Brandfolder, Inc.
 Author URI: http://brandfolder.com
 License: GPLv2
@@ -12,7 +12,7 @@ License: GPLv2
 
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 //
-// START THE BF FOR BRAND OWNERS
+// START THE BF FOR EMBEDDING
 //
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
@@ -200,8 +200,6 @@ function add_brandfolder_tinymce_plugin($plugin_array) {
 }
 
 
-add_action('init', 'add_brandfolder_button');
-
 if (!class_exists("brandfolderWordpressPlugin")) {
   class brandfolderWordpressPlugin {
     var $adminOptionsName = "brandfolderWordpressPluginAdminOptions";
@@ -233,9 +231,13 @@ if (!class_exists("brandfolderWordpressPlugin")) {
               $devOptions['brandfolder_url'] = apply_filters('brandfolder_url', $_POST['brandfolder_url']);
               $devOptions['brandfolder_inline_width'] = apply_filters('brandfolder_inline_width', $_POST['brandfolder_inline_width']);
               $devOptions['brandfolder_style'] = apply_filters('brandfolder_style', $_POST['brandfolder_style']);
+              $devOptions['brandfolder_hideembed'] = apply_filters('brandfolder_hideembed', $_POST['brandfolder_hideembed']);
+              $devOptions['brandfolder_hidebrowser'] = apply_filters('brandfolder_hidebrowser', $_POST['brandfolder_hidebrowser']);
             }
             update_option($this->adminOptionsName, $devOptions);
-            
+            if (!isset($devOptions['brandfolder_url'])) {
+                $devOptions['brandfolder_url'] = "brands";
+            }
             ?>
             <div class="updated"><p><strong><?php _e("Settings Updated.", "brandfolderWordpressPlugin");?></strong></p></div>
                       <?php
@@ -244,8 +246,13 @@ if (!class_exists("brandfolderWordpressPlugin")) {
             <form method="post" action="<?php echo $_SERVER["REQUEST_URI"]; ?>">
             <h2>Brandfolder setup</h2>
             <h3>Brandfolder url <span style="font-size:70%;">(get yours <a href="https://brandfolder.com/brands/" target="_blank">here</a>)</span></h3>
-            https://brandfolder.com/<input type="text" name="brandfolder_url" size="20" value="<?php _e(apply_filters('format_to_edit',$devOptions['brandfolder_url']), 'brandfolderWordpressPlugin') ?>">
+            <strong>https://brandfolder.com/</strong><input type="text" name="brandfolder_url" size="20" value="<?php _e(apply_filters('format_to_edit',$devOptions['brandfolder_url']), 'brandfolderWordpressPlugin') ?>">
             <br>
+            <span style="font-size:90%;margin-bottom:10px;display:block;margin-top:5px;">If you have multiple brandfolders you may want to put the Brand Overview URL here (<a href="https://brandfolder.com/brands" target="_blank">https://brandfolder.com/brands</a>)</span>
+            <hr>
+            <h4> Options for the Post/Page Editor </h4>
+            <input type="checkbox" name="brandfolder_hideembed" value="checked" <?php echo $devOptions['brandfolder_hideembed']; ?>> Hide Embed Options Icon in Editor Window<br>
+            <input type="checkbox" name="brandfolder_hidebrowser" value="checked" <?php echo $devOptions['brandfolder_hidebrowser']; ?>> Hide Media Library Option<br>
             <hr>
             <h3>Settings for inline-embed option <span style="font-size:70%;">(<a href="http://help.brandfolder.com/knowledgebase/topics/40112-sharing-embedding-a-brandfolder" target="_blank">what's this?</a>)</span></h3>
             <div>
@@ -268,7 +275,108 @@ if (!class_exists("brandfolderWordpressPlugin")) {
                 if(isset($devOptions['brandfolder_style'])) {
                   $brandfolder_style = $devOptions['brandfolder_style'];
                 } else {
-                  $brandfolder_style = ".bf-image-name { font-size: 20px; }";
+                  $brandfolder_style = "*[class^=bf], *[class^=bf]:before, *[class^=bf]:after {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.bf-person, .bf-logo, .bf-image, .bf-document, .bf-press {
+  display: inline-block;
+  margin: 10px auto 20px;
+  padding: 10px;
+  margin: 10px;
+  width: 224px;
+  border: 2px solid transparent;
+}
+
+.bf-person:hover, .bf-logo:hover, .bf-image:hover, .bf-document:hover, .bf-press:hover {
+  border-color: #eee;
+}
+
+.bf-element-link {
+  text-decoration: none;
+}
+
+.bf-element-link:hover {
+  text-decoration: none;
+}
+
+.bf-person-head {
+  margin: 0 0 10px 0;
+}
+
+.bf-person-head h1, .bf-person-head h3 {
+  text-decoration: none;
+}
+
+.bf-person-name, .bf-logo-name, .bf-image-name, .bf-document-name, .bf-press-name {
+  overflow-x: hidden;
+  overflow-y: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: 20px;
+  margin: 0 0 10px;
+}
+
+.bf-person-title {
+  overflow-x: hidden;
+  overflow-y: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: 14px;
+  margin-bottom: 0px;
+}
+
+.bf-person-image {
+  height: 200px;
+  width: 200px;
+  background-position: center center;
+  background-repeat: no-repeat;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+.bf-person-links {
+  margin: 10px auto;
+  height: 30px;
+}
+
+.bf-link-icon {
+  height: 30px;
+  width: 30px;
+  margin-right: 5px;
+  float: left;
+}
+
+.bf-twitter-icon {
+  background-image: url('//d2sdf28wg0skh3.cloudfront.net/icons/twitter.png');
+}
+
+.bf-linkedin-icon {
+  background-image: url('//d2sdf28wg0skh3.cloudfront.net/icons/linkedin.png');
+}
+
+.bf-brandfolder-link {
+  font-size: 10px;
+}
+
+.bf-logo-head, .bf-image-head, .bf-document-head, .bf-press-head {
+  margin: 10px 0 0 0;
+}
+
+.bf-logo-image, .bf-image-image, .bf-document-image, .bf-press-image {
+  height: 128px;
+  width: 200px;
+  background-position: center center;
+  background-repeat: no-repeat;
+  -webkit-background-size: contain;
+  -moz-background-size: contain;
+  -o-background-size: contain;
+  background-size: contain;
+}";
                 }
               ?>            
               <span style="font-size:90%;margin-bottom:10px;">&lt;style&gt;</span><br><textarea name="brandfolder_style" rows="8" style="width:80%;"><?php echo $brandfolder_style; ?></textarea><br><span style="font-size:90%;">&lt;/style&gt;</span>
@@ -296,7 +404,7 @@ if (!class_exists("brandfolderWordpressPlugin")) {
           $brandfolder_url = $brandfolderAdminOptions["brandfolder_url"];
 
           if ($brandfolder_url == "") {
-            echo '<iframe src="https://brandfolder.com" style="width: 98%; height: 95%; min-height: 730px;margin-top:10px;"></iframe>';
+            echo '<iframe src="https://brandfolder.com/brands" style="width: 98%; height: 95%; min-height: 730px;margin-top:10px;"></iframe>';
           } else {
             echo '<iframe src="https://brandfolder.com/'.$brandfolder_url.'?wordpress=true" style="width: 98%; height: 95%; min-height: 730px;margin-top:10px;"></iframe>'; 
           }   
@@ -304,7 +412,7 @@ if (!class_exists("brandfolderWordpressPlugin")) {
 
     function ConfigureMenu() {
       add_menu_page("Edit Brandfolder", "Edit Brandfolder", 6, basename(__FILE__), array(&$dl_pluginSeries,'Main'));
-      add_submenu_page( "brandfolder-menu", "Plugin setup", "Plugin setup", 6, basename(__FILE__),  array(&$dl_pluginSeries,'printAdminPage') );
+      add_submenu_page( "brandfolder-menu", "Settings", "Settings", 6, basename(__FILE__),  array(&$dl_pluginSeries,'printAdminPage') );
     }     
 
     function add_settings_link($links, $file) {
@@ -320,7 +428,7 @@ if (!class_exists("brandfolderWordpressPlugin")) {
   
   }
 
-} //End Class brandfolderWordpressPlugin
+} 
 
 if (class_exists("brandfolderWordpressPlugin")) {
   $dl_pluginSeries = new brandfolderWordpressPlugin();
@@ -334,10 +442,69 @@ if (!function_exists("brandfolderWordpressPlugin_ap")) {
       return;
     }
 
-    add_menu_page("Brandfolder", "Brandfolder", 6, "brandfolder-menu", array(&$dl_pluginSeries,'Main'), plugin_dir_url(__FILE__)."favicon.png");
-    add_submenu_page( "brandfolder-menu", "Plugin setup", "Plugin setup", 6, "brandfolder-sub-menu",  array(&$dl_pluginSeries,'printAdminPage') );
+    add_menu_page("Brandfolder", "My Brands", 6, "brandfolder-menu", array(&$dl_pluginSeries,'Main'), plugin_dir_url(__FILE__)."favicon.png");
+    add_submenu_page( "brandfolder-menu", "Settings", "Settings", 6, "brandfolder-sub-menu",  array(&$dl_pluginSeries,'printAdminPage') );
 
   } 
+}
+
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//
+// START THE BF FOR EMBEDDING
+//
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
+/* PLACE LINK IN WORDPRESS MEDIA BUTTON */
+function bf_media_tab($arr) {
+  $arr['grabber'] = 'Brandfolder';
+  return $arr;
+}
+
+function bf_grabber($type = 'grabber') {
+  media_upload_header();
+  bf_browser_manager();
+}
+
+function bf_grabber_page() {
+  return wp_iframe( 'bf_grabber');
+}
+
+function bf_browser_manager() {
+
+  $devOptions = get_option("brandfolderWordpressPluginAdminOptions");
+  if (!empty($devOptions)) {
+    foreach ($devOptions as $key => $option)
+      $brandfolderAdminOptions[$key] = $option;
+  }
+
+  $post_id = isset($_GET['post_id'])? (int) $_GET['post_id'] : 0;
+
+  $url = "https://brandfolder.com/" . $brandfolderAdminOptions["brandfolder_url"] . "?wp_browser=true&wp_callback_url=".urlencode(plugin_dir_url( __FILE__ ) . 'callback.php?post_id=' . $post_id . '&wp_abspath=' . ABSPATH);
+?>
+  <div class="wrap" style="height:99%;margin:0px;">
+  <iframe src="<?php echo $url; ?>" width="100%" height="100%"></iframe>
+  </div>
+<?php
+}
+
+function bf_media_buttons($context) { 
+  $img = plugins_url('logo.png', __FILE__);
+  ?>
+  <style> .insert-brandfolder-media .wp-media-buttons-icon{ background: url('<?php echo $img ?>') no-repeat 0px 0px; background-size: 100%; } </style>  
+    <a href="#" id="brandfolder-add-media" class="button insert-brandfolder-media" style="padding: 1px 0px 0px 3px;">
+      <span class="wp-media-buttons-icon" style="vertical-align: text-bottom;"></span></a>
+  <script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", function(){
+      jQuery(document.body).on('click', '#brandfolder-add-media', function(e) {
+        e.preventDefault();
+        var media = wp.media;
+        media.frames.brandfolder = wp.media.editor.open(wpActiveEditor);
+        jQuery( ".media-menu-item:contains('Brandfolder')" ).click();
+      });
+    });
+  </script>
+<?php
 }
 
 function load_into_head() { 
@@ -346,21 +513,35 @@ function load_into_head() {
     foreach ($devOptions as $key => $option)
       $brandfolderAdminOptions[$key] = $option;
   }
-
 ?>
-
   <style>
-    <?php echo $brandfolderAdminOptions["brandfolder_style"] ?>
+    <?php echo $brandfolderAdminOptions["brandfolder_style"]; ?>
   </style>
-
 <?php 
 }
 
 //Actions and Filters 
 if (isset($dl_pluginSeries)) {
+
+  $devOptions = get_option("brandfolderWordpressPluginAdminOptions");
+  if (!empty($devOptions)) {
+    foreach ($devOptions as $key => $option)
+      $brandfolderAdminOptions[$key] = $option;
+  }
+
   //Actions
   add_action('admin_menu', 'brandfolderWordpressPlugin_ap');
   add_action('brandfolder/brandfolder.php',  array(&$dl_pluginSeries, 'init'));
+
+  if (!isset($devOptions['brandfolder_hideembed']) && $devOptions['brandfolder_hideembed']!="checked") {
+    add_action('init', 'add_brandfolder_button');
+  }
+
+  if (!isset($devOptions['brandfolder_hidebrowser']) && $devOptions['brandfolder_hidebrowser']!="checked") {
+    add_filter('media_upload_tabs', 'bf_media_tab');
+    add_action( 'media_buttons', 'bf_media_buttons' );
+    add_action( 'media_upload_grabber', 'bf_grabber_page' );
+  }
 
   wp_enqueue_script('jquery');
   wp_enqueue_script('iframeheight', plugins_url('iframeheight.js', __FILE__), array('jquery'));
@@ -369,8 +550,4 @@ if (isset($dl_pluginSeries)) {
   wp_enqueue_script( 'brandfolder'); 
   
   add_action( 'wp_head', 'load_into_head' );
-
 }
-
-
-?>

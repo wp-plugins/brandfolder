@@ -3,7 +3,7 @@ Contributors: parterburn
 Tags: brand asset management, brand management, digital asset management, DAM, logo upload, logo management, share your logo, marketing tool, brand building
 Requires at least: 3.0
 Tested up to: 4.1
-Stable tag: 2.2.2
+Stable tag: 2.3
 
 Our simple plugin creates a beautiful web view for anybody to access your logos, product images, brand information, and plenty more.
 
@@ -37,6 +37,9 @@ Read all about the different embed options at <a href="http://help.brandfolder.c
 This plugin is released under a GPL license.
 
 == Changelog ==
+
+= 2.3 =
+* New Feature! Brandfolder now integrates with the built-in Media Library to allow for direct publishing of assets from your Brandfolder
 
 = 2.2.2 =
 * Fix issue with "Cannot redeclare my_refresh_mce()" incompatibility with other plugins
