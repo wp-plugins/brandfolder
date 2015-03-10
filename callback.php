@@ -60,9 +60,11 @@
         parent.parent.wp.media.editor.insert("<? echo $image; ?>");
         jQuery('.media-modal-close').click();
         var html = "<?php echo urlencode($html); ?>";
-        var feature_image = parent.parent.document.getElementById("postimagediv");
-        var inner_feature = feature_image.getElementsByClassName("inside")[0];
-        inner_feature.innerHTML = decodeURIComponent(html.replace(/\+/g,  " "));
+        if (html) {
+          var feature_image = parent.parent.document.getElementById("postimagediv");
+          var inner_feature = feature_image.getElementsByClassName("inside")[0];
+          inner_feature.innerHTML = decodeURIComponent(html.replace(/\+/g,  " "));
+        }
         window.history.back();
       },0);
     </script>
