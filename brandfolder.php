@@ -3,7 +3,7 @@
 Plugin Name: Brandfolder
 Plugin URI: http://wordpress.org/plugins/brandfolder/
 Description: Adds the ability for you to edit your Brandfolder inside Wordpress as well as easily embed it as a popup, or in a Page/Post with widgets or an iframe.
-Version: 2.3.2
+Version: 2.4
 Author: Brandfolder, Inc.
 Author URI: http://brandfolder.com
 License: GPLv2
@@ -43,7 +43,6 @@ function brandfolder_inline($atts)  {
     $output .= '<a href="http://brandfolder.com?utm_source=wordpress&utm_medium=embed&utm_term='.$id.'&utm_content=inline&utm_campaign=wordpress_inline_embed" title="Organize and share your brand assets" style="float:right;margin-top:5px;border:0px;margin-right:10px;"><img src="//d2sdf28wg0skh3.cloudfront.net/powered_by_black.png" style="height:30px;border:0px;"></a>';
   }
   $output .= '<div style="clear:both;"></div>';
-  $output .= '<script type="text/javascript">jQuery(document).ready(function () { jQuery("#brandfolder-embed-iframe").iframeHeight(); });</script>';
 
   return $output;
 
@@ -517,7 +516,50 @@ function load_into_head() {
   <style>
     <?php echo $brandfolderAdminOptions["brandfolder_style"]; ?>
   </style>
+  <script type="text/javascript">
+    function brandfolder_loadScript(src, callback)
+    {
+      var s,r,t;
+      r = false;
+      s = document.createElement('script');
+      s.type = 'text/javascript';
+      s.src = src;
+      s.onload = s.onreadystatechange = function() {
+        //console.log( this.readyState ); //uncomment this line to see which ready states are called.
+        if ( !r && (!this.readyState || this.readyState == 'complete') )
+        {
+          r = true;
+          callback();
+        }
+      };
+      t = document.getElementsByTagName('script')[0];
+      t.parentNode.insertBefore(s, t);
+    }
+
+    function brandfolder_null() {
+    }
+
+    function brandfolder_resize() {
+      jQuery("#brandfolder-embed-iframe").iframeHeight();
+    }
+
+    jQuery(document).ready(
+      function () { 
+        if (jQuery(".brandfolder").length > 0){
+          brandfolder_loadScript("//d2sdf28wg0skh3.cloudfront.net/bf.min.js", brandfolder_null);
+        }
+
+        if (jQuery("#brandfolder-embed-iframe").length > 0){
+          brandfolder_loadScript("<?php echo plugins_url('iframeheight.js', __FILE__); ?>", brandfolder_resize);
+        }
+    });
+
+  </script>
 <?php 
+}
+
+function brandfolder_scripts() {
+  wp_enqueue_script('jquery');
 }
 
 //Actions and Filters 
@@ -543,11 +585,6 @@ if (isset($dl_pluginSeries)) {
     add_action( 'media_upload_grabber', 'bf_grabber_page' );
   }
 
-  wp_enqueue_script('jquery');
-  wp_enqueue_script('iframeheight', plugins_url('iframeheight.js', __FILE__), array('jquery'));
-
-  wp_register_script( 'brandfolder', '//d2sdf28wg0skh3.cloudfront.net/bf.min.js');
-  wp_enqueue_script( 'brandfolder'); 
-  
+  add_action( 'wp_enqueue_scripts', 'brandfolder_scripts' );
   add_action( 'wp_head', 'load_into_head' );
 }
