@@ -3,7 +3,7 @@
 Plugin Name: Brandfolder
 Plugin URI: http://wordpress.org/plugins/brandfolder/
 Description: Adds the ability for you to edit your Brandfolder inside Wordpress as well as easily embed it as a popup, or in a Page/Post with widgets or an iframe.
-Version: 2.4
+Version: 2.4.1
 Author: Brandfolder, Inc.
 Author URI: http://brandfolder.com
 License: GPLv2
@@ -223,6 +223,10 @@ if (!class_exists("brandfolderWordpressPlugin")) {
 
     //Prints out the admin page
     function printAdminPage() {
+          if (!current_user_can('manage_options'))  {
+              wp_die( __('You do not have sufficient permissions to access this page.') );
+          }
+
           $devOptions = $this->getAdminOptions();
                     
           if (isset($_POST['update_brandfolderWordpressPluginSettings'])) { 
@@ -390,9 +394,6 @@ if (!class_exists("brandfolderWordpressPlugin")) {
 
 
     function Main() {
-          if (!current_user_can('manage_options'))  {
-              wp_die( __('You do not have sufficient permissions to access this page.') );
-          }
           
           $devOptions = get_option("brandfolderWordpressPluginAdminOptions");
           if (!empty($devOptions)) {
@@ -406,7 +407,7 @@ if (!class_exists("brandfolderWordpressPlugin")) {
             echo '<iframe src="https://brandfolder.com/brands" style="width: 98%; height: 95%; min-height: 730px;margin-top:10px;"></iframe>';
           } else {
             echo '<iframe src="https://brandfolder.com/'.$brandfolder_url.'?wordpress=true" style="width: 98%; height: 95%; min-height: 730px;margin-top:10px;"></iframe>'; 
-          }   
+          }
       }
 
     function ConfigureMenu() {
